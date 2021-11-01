@@ -14,7 +14,14 @@ class Authenticate extends Middleware
      */
     protected function redirectTo($request)
     {
-        if (! $request->expectsJson()) {
+        if($request->is('api/*'))
+        {
+            throw new HttpResponseException(response([
+                'message' => 'Bad credentials invalid Token'
+            ], 401));  
+        };
+       
+        if (!$request->expectsJson()) {
             return route('login');
         }
     }
